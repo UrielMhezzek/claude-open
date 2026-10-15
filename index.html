@@ -37,13 +37,13 @@
   </section>
   <section id="fehler" hidden>
     <h1 class="fehler">Ungültiger Link</h1>
-    <p>Erlaubt sind nur Pfade wie <strong>chat/…</strong>, <strong>cowork/…</strong> oder <strong>project/…</strong> mit Buchstaben, Ziffern, „-“ und „_“.</p>
+    <p>Erlaubt sind nur Pfade wie <strong>chat/…</strong>, <strong>cowork/…</strong>, <strong>project/…</strong> oder <strong>code/…</strong> mit Buchstaben, Ziffern, „-“ und „_“.</p>
   </section>
   <noscript><p>Diese Seite braucht JavaScript.</p></noscript>
 </main>
 <script>
-  // Nur chat/, cowork/ oder project/ gefolgt von [A-Za-z0-9_-] – keine offene Weiterleitung.
-  var ERLAUBT = /^(chat|cowork|project)\/[A-Za-z0-9_-]+$/;
+  // Nur chat/, cowork/, project/ oder code/ gefolgt von [A-Za-z0-9_-] – keine offene Weiterleitung.
+  var ERLAUBT = /^(chat|cowork|project|code)\/[A-Za-z0-9_-]+$/;
 
   function baueLink(pfad) {
     return typeof pfad === "string" && ERLAUBT.test(pfad) ? "claude://claude.ai/" + pfad : null;
