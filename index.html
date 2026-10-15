@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>In Claude öffnen</title>
+<style>
+  :root { --bg: #faf9f6; --fg: #1f1e1c; --muted: #6b6862; --box: #f0eee8; --accent: #c15f3c; --accent-fg: #fff; --err: #b3261e; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1c1b19; --fg: #ece9e3; --muted: #a39f97; --box: #2a2926; --accent: #d97757; --accent-fg: #1c1b19; --err: #f2b8b5; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
+         background: var(--bg); color: var(--fg); font: 1rem/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { width: 100%; max-width: 32rem; }
+  h1 { font-size: 1.35rem; margin: 0 0 .75rem; }
+  p { margin: 0 0 1rem; color: var(--muted); }
+  a.knopf { display: block; text-align: center; padding: .85rem 1rem; border-radius: .6rem;
+            background: var(--accent); color: var(--accent-fg); font-weight: 600; text-decoration: none; }
+  a.knopf:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+  code { display: block; margin-top: 1rem; padding: .75rem; border-radius: .5rem; background: var(--box);
+         font: .85rem/1.4 ui-monospace, Consolas, monospace; word-break: break-all; user-select: all; }
+  .fehler { color: var(--err); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <section id="ok" hidden>
+    <h1>Claude-App wird geöffnet …</h1>
+    <p>Falls nichts passiert, nutze den Knopf.</p>
+    <a id="knopf" class="knopf" href="#">In Claude-App öffnen</a>
+    <code id="link"></code>
+  </section>
+  <section id="fehler" hidden>
+    <h1 class="fehler">Ungültiger Link</h1>
+    <p>Erlaubt sind nur Pfade wie <strong>chat/…</strong>, <strong>cowork/…</strong> oder <strong>project/…</strong> mit Buchstaben, Ziffern, „-“ und „_“.</p>
+  </section>
+  <noscript><p>Diese Seite braucht JavaScript.</p></noscript>
+</main>
+<script>
+  // Nur chat/, cowork/ oder project/ gefolgt von [A-Za-z0-9_-] – keine offene Weiterleitung.
+  var ERLAUBT = /^(chat|cowork|project)\/[A-Za-z0-9_-]+$/;
+
+  function baueLink(pfad) {
+    return typeof pfad === "string" && ERLAUBT.test(pfad) ? "claude://claude.ai/" + pfad : null;
+  }
+
+  var ziel = baueLink(new URLSearchParams(window.location.search).get("p"));
+  if (ziel) {
+    document.getElementById("knopf").href = ziel;
+    document.getElementById("link").textContent = ziel;
+    document.getElementById("ok").hidden = false;
+    window.location.href = ziel;
+  } else {
+    document.getElementById("fehler").hidden = false;
+  }
+</script>
+</body>
+</html>
